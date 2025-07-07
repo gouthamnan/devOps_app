@@ -4,17 +4,22 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
+        DOCKER_IMAGE = "goan3069/devopsexamapp:latest"
+        SCANNER_HOME = tool'sonar-scanner'
     }
 
     stages {
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/KastroVKiran/devops-exam-app.git', 
-                    branch: 'master'
+                git url: 'https://github.com/gouthamnan/devOps_app.git'   
+                    branch: 'main'
             }
         }
-
+        stage('File System Scan') {
+          steps {
+              sh ''trivy fs --security-check yum.config --format table -0 trivy-fs-report.html} .''
+            }
+        }
         stage('Verify Docker Compose') {
             steps {
                 sh '''
@@ -98,13 +103,13 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
+        DOCKER_IMAGE = "goan3069/devopsexamapp:latest"
     }
 
     stages {
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/KastroVKiran/devops-exam-app.git', 
+                git url: 'https://github.com/gouthamnan/devOps_app.git', 
                     branch: 'master'
             }
         }
@@ -206,7 +211,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "kastrov/devopsexamapp:latest"
+        DOCKER_IMAGE = "goan3069/devopsexamapp:latest"
         EKS_CLUSTER = "devopsapp"
         K8S_NAMESPACE = "devopsexamapp"
         AWS_REGION = "us-west-2"  // Update to your region
